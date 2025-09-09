@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PSN — Project Solar Node</title>
+  <meta name="description" content="PSN: Documentation, BOMs, build logs and collaboration hub for Project Solar Node." />
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#fb923c}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0;background:linear-gradient(180deg,#071025, #081428);color:#e6eef6}
+    header{padding:24px 28px;display:flex;align-items:center;gap:16px}
+    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
+    nav{margin-left:auto}
+    nav a{color:var(--muted);text-decoration:none;margin-left:18px}
+    main{padding:28px;max-width:1100px;margin:0 auto}
+    .hero{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+    .card{background:rgba(255,255,255,0.03);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    h1{margin:0 0 8px;font-size:28px}
+    p.lead{color:var(--muted);margin-top:0}
+    .toc ul{padding-left:18px;color:var(--muted)}
+    .section{margin-top:20px}
+    .project-list{display:flex;flex-direction:column;gap:12px}
+    .project{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02)}
+    footer{padding:28px;text-align:center;color:var(--muted)}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,var(--accent),#7c3aed);color:#061026;text-decoration:none;font-weight:600}
+    code{background:rgba(255,255,255,0.03);padding:4px 6px;border-radius:6px;color:#cfe8ff}
+    pre{background:#021226;padding:12px;border-radius:8px;overflow:auto}
+    @media(max-width:880px){.hero{grid-template-columns:1fr}
+      nav{display:none}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">PSN</div>
+    <div>
+      <div style="font-weight:700">PSN — Project Solar Node</div>
+      <div style="font-size:12px;color:var(--muted)">Docs • Builds • BOMs • Collaboration</div>
+    </div>
+    <nav>
+      <a href="#overview">Overview</a>
+      <a href="#projects">Projects</a>
+      <a href="#docs">Docs</a>
+      <a href="#bom">BOM</a>
+      <a href="#contribute">Contribute</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="card">
+        <h1 id="overview">PSN — What this is</h1>
+        <p class="lead">A collaborative documentation hub for Project Solar Node. This site stores: build logs, BOMs, wiring diagrams, code snippets, and how‑tos we want to share within the PSN community and with future contributors.</p>
+        <div class="section">
+          <h3>Why this approach</h3>
+          <ul>
+            <li>Single-source docs (Markdown) that convert to a static website.</li>
+            <li>Lightweight, fast, and easy to host (GitHub Pages, Netlify, Vercel).</li>
+            <li>Designed to be machine-readable so ChatGPT can ingest and reference it later.</li>
+          </ul>
+        </div>
+        <div class="section">
+          <h3>Quick links</h3>
+          <div style="display:flex;gap:8px;margin-top:8px"><a class="btn" href="#docs">Open Docs</a><a class="btn" href="#contribute">Get Involved</a></div>
+        </div>
+      </div>
+
+      <aside class="card">
+        <div style="font-weight:700;margin-bottom:8px">Site contents</div>
+        <div class="toc">
+          <ul>
+            <li>Home / Overview</li>
+            <li>Projects (Ember Core, Verdant Cell, Shelf1BOM)</li>
+            <li>Docs (Phase docs, Wiring, Code, Testing)</li>
+            <li>BOM (downloadable CSV)</li>
+            <li>Contribute / Changelog</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section card" id="projects">
+      <h2>Active Projects</h2>
+      <div class="project-list">
+        <div class="project"><div><strong>Ember Core</strong><div style="font-size:13px;color:var(--muted)">Solar charging station — Phase 2</div></div><div><a class="btn" href="#docs">Open</a></div></div>
+        <div class="project"><div><strong>Verdant Cell</strong><div style="font-size:13px;color:var(--muted)">Hydroponic grow shelf — Project 2</div></div><div><a class="btn" href="#docs">Open</a></div></div>
+        <div class="project"><div><strong>Shelf1BOM</strong><div style="font-size:13px;color:var(--muted)">Parts list & links</div></div><div><a class="btn" href="#bom">BOM</a></div></div>
+      </div>
+    </section>
+
+    <section class="section card" id="docs">
+      <h2>Docs & How‑tos</h2>
+      <p style="color:var(--muted)">Place Markdown files inside <code>/docs</code>. Suggested structure:</p>
+      <pre>docs/
+├─ index.md  (site landing)
+├─ phase-1-1.md
+├─ phase-2.md
+├─ wiring.md
+├─ code/
+│  └─ arduino-sys-check.md
+└─ assets/
+   └─ images/
+</pre>
+      <p style="color:var(--muted)">I can automatically convert these to HTML, or set up MkDocs/Docusaurus for a richer experience later.</p>
+    </section>
+
+    <section class="section card" id="bom">
+      <h2>BOM (Shelf1BOM)</h2>
+      <p style="color:var(--muted)">We'll store a CSV/Google Sheet with columns: Part name, Qty, Link, Vendor, Cost, Date ordered, Install location, Notes.</p>
+      <p>Example quick CSV header: <code>part,qty,link,vendor,cost,date,location,notes</code></p>
+      <p style="margin-top:12px;color:var(--muted)">Tip: keep the BOM in the repo under <code>/bom/shelf1bom.csv</code> so it's versioned and easy to export.</p>
+    </section>
+
+    <section class="section card" id="contribute">
+      <h2>How you can share docs with me (the assistant)</h2>
+      <ul style="color:var(--muted)">
+        <li><strong>Upload files directly to this chat</strong> — easiest for quick excerpts, images, diagrams.</li>
+        <li><strong>Connect a Google Drive or Dropbox</strong> and share the folder — best for ongoing sync and lots of assets.</li>
+        <li><strong>Host the repo on GitHub</strong> and give me the link or push updates — I can generate PR-ready content that you paste into the repo.</li>
+      </ul>
+      <p style="color:var(--muted)">I recommend starting with direct uploads for Phase 2 photos + diagrams and a single GitHub repo named <code>psn-site</code>. I'll create Markdown pages from your content and push a deployable static site build you can host for free.</p>
+    </section>
+  </main>
+  <footer>
+    Built for PSN • Ask me to expand this into a full docs generator, a React site, or a deployable repo.
+  </footer>
+</body>
+</html>
