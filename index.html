@@ -4,133 +4,146 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PSN — Project Solar Node</title>
-  <meta name="description" content="PSN: Documentation, BOMs, build logs and collaboration hub for Project Solar Node." />
+  <meta name="description" content="PSN: Documentation, BOMs, build logs, and collaboration hub." />
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#fb923c}
-    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0;background:linear-gradient(180deg,#071025, #081428);color:#e6eef6}
-    header{padding:24px 28px;display:flex;align-items:center;gap:16px}
-    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
-    nav{margin-left:auto}
-    nav a{color:var(--muted);text-decoration:none;margin-left:18px}
-    main{padding:28px;max-width:1100px;margin:0 auto}
-    .hero{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
-    .card{background:rgba(255,255,255,0.03);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
-    h1{margin:0 0 8px;font-size:28px}
-    p.lead{color:var(--muted);margin-top:0}
-    .toc ul{padding-left:18px;color:var(--muted)}
-    .section{margin-top:20px}
-    .project-list{display:flex;flex-direction:column;gap:12px}
-    .project{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02)}
-    footer{padding:28px;text-align:center;color:var(--muted)}
-    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,var(--accent),#7c3aed);color:#061026;text-decoration:none;font-weight:600}
-    code{background:rgba(255,255,255,0.03);padding:4px 6px;border-radius:6px;color:#cfe8ff}
-    pre{background:#021226;padding:12px;border-radius:8px;overflow:auto}
-    @media(max-width:880px){.hero{grid-template-columns:1fr}
-      nav{display:none}
-    }
+    :root{--bg:#0f1724;--muted:#9aa4b2;--accent:#fb923c}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;background:linear-gradient(180deg,#071025,#081428);color:#e6eef6}
+    header{padding:22px 28px;display:flex;gap:14px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:800}
+    .wrap{max-width:1100px;margin:0 auto;padding:0 28px 32px}
+    h1{margin:0;font-size:28px}
+    .muted{color:var(--muted)}
+    .card{background:rgba(255,255,255,0.04);border-radius:12px;padding:18px;margin-top:18px;box-shadow:0 6px 18px rgba(2,6,23,.5)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+    a{color:#cfe8ff;text-decoration:none}
+    a.btn{display:inline-block;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,var(--accent),#7c3aed);color:#061026;font-weight:700}
+    ul{margin:8px 0 0 18px}
+    .small{font-size:12px}
+    footer{padding:26px;text-align:center;color:var(--muted)}
+    code{background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:6px}
   </style>
 </head>
 <body>
   <header>
     <div class="logo">PSN</div>
     <div>
-      <div style="font-weight:700">PSN — Project Solar Node</div>
-      <div style="font-size:12px;color:var(--muted)">Docs • Builds • BOMs • Collaboration</div>
+      <h1>Project Solar Node</h1>
+      <div class="muted small">Docs • Builds • BOMs • Collaboration</div>
     </div>
-    <nav>
-      <a href="#overview">Overview</a>
-      <a href="#projects">Projects</a>
-      <a href="#docs">Docs</a>
-      <a href="#bom">BOM</a>
-      <a href="#contribute">Contribute</a>
-    </nav>
   </header>
-  <main>
-    <section class="hero">
-      <div class="card">
-        <h1 id="overview">PSN — What this is</h1>
-        <p class="lead">A collaborative documentation hub for Project Solar Node. This site stores: build logs, BOMs, wiring diagrams, code snippets, and how‑tos we want to share within the PSN community and with future contributors.</p>
-        <div class="section">
-          <h3>Why this approach</h3>
-          <ul>
-            <li>Single-source docs (Markdown) that convert to a static website.</li>
-            <li>Lightweight, fast, and easy to host (GitHub Pages, Netlify, Vercel).</li>
-            <li>Designed to be machine-readable so ChatGPT can ingest and reference it later.</li>
-          </ul>
-        </div>
-        <div class="section">
-          <h3>Quick links</h3>
-          <div style="display:flex;gap:8px;margin-top:8px"><a class="btn" href="#docs">Open Docs</a><a class="btn" href="#contribute">Get Involved</a></div>
-        </div>
+
+  <div class="wrap">
+    <div class="card">
+      <p class="muted">This homepage auto-indexes your GitHub repo. Add or move files in the repo and this page updates itself on refresh.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+        <a class="btn" href="https://github.com/davidgritton015-code/psn-site" target="_blank" rel="noopener">Open Repository</a>
+        <a class="btn" href="#docs">Docs Index</a>
+        <a class="btn" href="#boms">BOMs</a>
       </div>
+    </div>
 
-      <aside class="card">
-        <div style="font-weight:700;margin-bottom:8px">Site contents</div>
-        <div class="toc">
-          <ul>
-            <li>Home / Overview</li>
-            <li>Projects (Ember Core, Verdant Cell, Shelf1BOM)</li>
-            <li>Docs (Phase docs, Wiring, Code, Testing)</li>
-            <li>BOM (downloadable CSV)</li>
-            <li>Contribute / Changelog</li>
-          </ul>
-        </div>
-      </aside>
+    <div class="grid">
+      <section class="card" id="docs">
+        <h2>Documentation (Markdown)</h2>
+        <div id="docsList" class="muted">Loading…</div>
+      </section>
+
+      <section class="card" id="boms">
+        <h2>BOMs (CSV)</h2>
+        <div id="bomList" class="muted">Loading…</div>
+      </section>
+    </div>
+
+    <section class="card">
+      <h3>How this works</h3>
+      <ol class="muted">
+        <li>Client-side fetch to the GitHub API grabs a list of files in <code>main</code>.</li>
+        <li>We list <code>.md</code> and <code>.csv</code> files. Markdown links open in GitHub’s viewer.</li>
+        <li>Keep using your mirrored Google Drive structure—no extra steps.</li>
+      </ol>
+      <p class="small muted">If you ever hit API rate limits (rare), just refresh later or we can switch to a prebuilt manifest file.</p>
     </section>
+  </div>
 
-    <section class="section card" id="projects">
-      <h2>Active Projects</h2>
-      <div class="project-list">
-        <div class="project"><div><strong>Ember Core</strong><div style="font-size:13px;color:var(--muted)">Solar charging station — Phase 2</div></div><div><a class="btn" href="#docs">Open</a></div></div>
-        <div class="project"><div><strong>Verdant Cell</strong><div style="font-size:13px;color:var(--muted)">Hydroponic grow shelf — Project 2</div></div><div><a class="btn" href="#docs">Open</a></div></div>
-        <div class="project"><div><strong>Shelf1BOM</strong><div style="font-size:13px;color:var(--muted)">Parts list & links</div></div><div><a class="btn" href="#bom">BOM</a></div></div>
-      </div>
-    </section>
+  <footer>Built for PSN — simple now, easy to upgrade later.</footer>
 
-    <section class="section card" id="docs">
-      <h2>Docs & How‑tos</h2>
-<!-- Docs button -->
-<p><a class="btn" href="https://github.com/davidgritton015-code/psn-site/blob/main/docs/index.md" target="_blank" rel="noopener">Open PSN Docs on GitHub</a></p>
+  <script>
+  // CONFIG
+  const owner = "davidgritton015-code";
+  const repo  = "psn-site";
+  const branch = "main";
 
-<!-- BOM button -->
-<p><a class="btn" href="https://github.com/davidgritton015-code/psn-site/blob/main/bom/shelf1bom.csv" target="_blank" rel="noopener">Open Shelf1BOM (CSV)</a></p>
+  const api = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
+  const docsList = document.getElementById("docsList");
+  const bomList  = document.getElementById("bomList");
 
-      <p style="color:var(--muted)">Place Markdown files inside <code>/docs</code>. Suggested structure:</p>
-      <pre>docs/
-<p><a class="btn" href="https://github.com/<davidgriton-code>/psn-site/blob/main/bom/shelf1bom.csv/index.md">Open PSN Docs on GitHub</a></p>
-├─ index.md  (site landing)
-├─ phase-1-1.md
-├─ phase-2.md
-├─ wiring.md
-├─ code/
-│  └─ arduino-sys-check.md
-└─ assets/
-   └─ images/
+  function groupByTopLevel(paths) {
+    const groups = {};
+    for (const p of paths) {
+      const top = p.includes("/") ? p.split("/")[0] : "(root)";
+      groups[top] = groups[top] || [];
+      groups[top].push(p);
+    }
+    return groups;
+  }
 
-        
-</pre>
-      <p style="color:var(--muted)">I can automatically convert these to HTML, or set up MkDocs/Docusaurus for a richer experience later.</p>
-    </section>
+  function makeGroupList(groups, isCsv=false) {
+    const container = document.createElement("div");
+    for (const top of Object.keys(groups).sort()) {
+      const section = document.createElement("div");
+      section.style.marginBottom = "10px";
+      const title = document.createElement("div");
+      title.innerHTML = `<strong>${top}</strong>`;
+      section.appendChild(title);
 
-    <section class="section card" id="bom">
-      <h2>BOM (Shelf1BOM)</h2>
-      <p style="color:var(--muted)">We'll store a CSV/Google Sheet with columns: Part name, Qty, Link, Vendor, Cost, Date ordered, Install location, Notes.</p>
-      <p>Example quick CSV header: <code>part,qty,link,vendor,cost,date,location,notes</code></p>
-      <p style="margin-top:12px;color:var(--muted)">Tip: keep the BOM in the repo under <code>/bom/shelf1bom.csv</code> so it's versioned and easy to export.</p>
-    </section>
+      const ul = document.createElement("ul");
+      for (const path of groups[top].sort()) {
+        const li = document.createElement("li");
+        const href = `https://github.com/${owner}/${repo}/blob/${branch}/${encodeURI(path)}`;
+        li.innerHTML = `<a href="${href}" target="_blank" rel="noopener">${path.replace(top + "/", "")}</a>`;
+        ul.appendChild(li);
+      }
+      section.appendChild(ul);
+      container.appendChild(section);
+    }
+    return container;
+  }
 
-    <section class="section card" id="contribute">
-      <h2>How you can share docs with me (the assistant)</h2>
-      <ul style="color:var(--muted)">
-        <li><strong>Upload files directly to this chat</strong> — easiest for quick excerpts, images, diagrams.</li>
-        <li><strong>Connect a Google Drive or Dropbox</strong> and share the folder — best for ongoing sync and lots of assets.</li>
-        <li><strong>Host the repo on GitHub</strong> and give me the link or push updates — I can generate PR-ready content that you paste into the repo.</li>
-      </ul>
-      <p style="color:var(--muted)">I recommend starting with direct uploads for Phase 2 photos + diagrams and a single GitHub repo named <code>psn-site</code>. I'll create Markdown pages from your content and push a deployable static site build you can host for free.</p>
-    </section>
-  </main>
-  <footer>
-    Built for PSN • Ask me to expand this into a full docs generator, a React site, or a deployable repo.
-  </footer>
+  fetch(api)
+    .then(r => {
+      if (!r.ok) throw new Error("GitHub API error: " + r.status);
+      return r.json();
+    })
+    .then(data => {
+      const tree = (data.tree || []).filter(n => n.type === "blob").map(n => n.path);
+
+      const mdFiles  = tree.filter(p => p.toLowerCase().endsWith(".md"));
+      const csvFiles = tree.filter(p => p.toLowerCase().endsWith(".csv"));
+
+      if (mdFiles.length) {
+        const groups = groupByTopLevel(mdFiles);
+        docsList.innerHTML = "";
+        docsList.classList.remove("muted");
+        docsList.appendChild(makeGroupList(groups));
+      } else {
+        docsList.textContent = "No Markdown files found.";
+      }
+
+      if (csvFiles.length) {
+        const groups = groupByTopLevel(csvFiles);
+        bomList.innerHTML = "";
+        bomList.classList.remove("muted");
+        bomList.appendChild(makeGroupList(groups, true));
+      } else {
+        bomList.textContent = "No CSV files found.";
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      docsList.textContent = "Couldn’t load file list (API limit or network).";
+      bomList.textContent  = "Couldn’t load file list (API limit or network).";
+    });
+  </script>
 </body>
 </html>
