@@ -6,11 +6,11 @@
   <title>PSN — Project Solar Node</title>
   <meta name="description" content="PSN: Documentation, BOMs, build logs, and collaboration hub." />
   <style>
-    :root{--bg:#0f1724;--muted:#9aa4b2;--accent:#fb923c}
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;background:linear-gradient(180deg,#071025,#081428);color:#e6eef6}
+    :root{--muted:#9aa4b2;--accent:#fb923c}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;background:linear-gradient(180deg,#071025,#0b1530);color:#e6eef6}
     header{padding:22px 28px;display:flex;gap:14px;align-items:center}
     .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:800}
-    .wrap{max-width:1100px;margin:0 auto;padding:0 28px 32px}
+    .wrap{max-width:1100px;margin:0 auto;padding:0 28px 40px}
     h1{margin:0;font-size:28px}
     .muted{color:var(--muted)}
     .card{background:rgba(255,255,255,0.04);border-radius:12px;padding:18px;margin-top:18px;box-shadow:0 6px 18px rgba(2,6,23,.5)}
@@ -21,7 +21,8 @@
     ul{margin:8px 0 0 18px}
     .small{font-size:12px}
     footer{padding:26px;text-align:center;color:var(--muted)}
-    code{background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:6px}
+    input[type="search"]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #203051;background:#0b1730;color:#e6eef6}
+    .toplinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
   </style>
 </head>
 <body>
@@ -35,12 +36,18 @@
 
   <div class="wrap">
     <div class="card">
-      <p class="muted">This homepage auto-indexes your GitHub repo. Add or move files in the repo and this page updates itself on refresh.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <p class="muted">This homepage auto-indexes your GitHub repo. Add/move files in the repo and refresh to update.</p>
+      <div class="toplinks">
         <a class="btn" href="https://github.com/davidgritton015-code/psn-site" target="_blank" rel="noopener">Open Repository</a>
-        <a class="btn" href="#docs">Docs Index</a>
+        <a class="btn" href="#docs">Docs</a>
         <a class="btn" href="#boms">BOMs</a>
+        <a class="btn" href="#all">All Files</a>
       </div>
+    </div>
+
+    <div class="card">
+      <input id="search" type="search" placeholder="Search filenames (e.g., phase, verdant, ember, wiring)…" />
+      <div class="small muted" style="margin-top:6px">Filters the lists below by filename.</div>
     </div>
 
     <div class="grid">
@@ -55,95 +62,98 @@
       </section>
     </div>
 
+    <section class="card" id="all">
+      <h2>All Files (by top-level folder)</h2>
+      <div id="allList" class="muted">Loading…</div>
+    </section>
+
     <section class="card">
-      <h3>How this works</h3>
-      <ol class="muted">
-        <li>Client-side fetch to the GitHub API grabs a list of files in <code>main</code>.</li>
-        <li>We list <code>.md</code> and <code>.csv</code> files. Markdown links open in GitHub’s viewer.</li>
-        <li>Keep using your mirrored Google Drive structure—no extra steps.</li>
-      </ol>
-      <p class="small muted">If you ever hit API rate limits (rare), just refresh later or we can switch to a prebuilt manifest file.</p>
+      <h3>Notes</h3>
+      <ul class="muted">
+        <li>Markdown links open in GitHub’s viewer for clean rendering.</li>
+        <li>If GitHub API rate-limits you (rare), refresh later. We can switch to a prebuilt manifest if needed.</li>
+      </ul>
     </section>
   </div>
 
   <footer>Built for PSN — simple now, easy to upgrade later.</footer>
 
   <script>
-  // CONFIG
-  const owner = "davidgritton015-code";
-  const repo  = "psn-site";
+  // ===== CONFIG =====
+  const owner  = "davidgritton015-code";
+  const repo   = "psn-site";
   const branch = "main";
+  const api    = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
 
-  const api = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
-  const docsList = document.getElementById("docsList");
-  const bomList  = document.getElementById("bomList");
+  const $docs = document.getElementById("docsList");
+  const $boms = document.getElementById("bomList");
+  const $all  = document.getElementById("allList");
+  const $search = document.getElementById("search");
 
-  function groupByTopLevel(paths) {
-    const groups = {};
-    for (const p of paths) {
-      const top = p.includes("/") ? p.split("/")[0] : "(root)";
-      groups[top] = groups[top] || [];
-      groups[top].push(p);
-    }
-    return groups;
+  // Title-ize a filename: "phase-2.md" -> "Phase 2"
+  function nicename(p){
+    const name = p.split("/").pop().replace(/\.[^/.]+$/, "");
+    return name.replace(/[-_]+/g," ").replace(/\b\w/g, c=>c.toUpperCase());
+  }
+  function topLevel(path){ return path.includes("/") ? path.split("/")[0] : "(root)"; }
+
+  function group(paths){
+    return paths.reduce((m,p)=>{ (m[topLevel(p)]??=[]).push(p); return m; },{});
+  }
+  function list(groups, exts){
+    const wrap = document.createElement("div");
+    Object.keys(groups).sort().forEach(top=>{
+      const sect = document.createElement("div"); sect.style.marginBottom="12px";
+      const title = document.createElement("div"); title.innerHTML = `<strong>${top}</strong>`;
+      const ul = document.createElement("ul");
+      [...groups[top]].sort().forEach(p=>{
+        const ok = exts?.some(ext=>p.toLowerCase().endsWith(ext)) ?? true;
+        if(!ok) return;
+        const li = document.createElement("li");
+        const href = `https://github.com/${owner}/${repo}/blob/${branch}/${encodeURI(p)}`;
+        li.innerHTML = `<a href="${href}" target="_blank" rel="noopener">${nicename(p)}</a> <span class="small muted">(${p})</span>`;
+        ul.appendChild(li);
+      });
+      sect.appendChild(title); sect.appendChild(ul); wrap.appendChild(sect);
+    });
+    return wrap;
   }
 
-  function makeGroupList(groups, isCsv=false) {
-    const container = document.createElement("div");
-    for (const top of Object.keys(groups).sort()) {
-      const section = document.createElement("div");
-      section.style.marginBottom = "10px";
-      const title = document.createElement("div");
-      title.innerHTML = `<strong>${top}</strong>`;
-      section.appendChild(title);
+  let treePaths = [];
+  function render(filter=""){
+    const f = filter.trim().toLowerCase();
+    const visible = f ? treePaths.filter(p=>p.toLowerCase().includes(f)) : treePaths.slice();
 
-      const ul = document.createElement("ul");
-      for (const path of groups[top].sort()) {
-        const li = document.createElement("li");
-        const href = `https://github.com/${owner}/${repo}/blob/${branch}/${encodeURI(path)}`;
-        li.innerHTML = `<a href="${href}" target="_blank" rel="noopener">${path.replace(top + "/", "")}</a>`;
-        ul.appendChild(li);
-      }
-      section.appendChild(ul);
-      container.appendChild(section);
-    }
-    return container;
+    const md  = visible.filter(p=>p.toLowerCase().endsWith(".md"));
+    const csv = visible.filter(p=>p.toLowerCase().endsWith(".csv"));
+
+    // Docs
+    if(md.length){ $docs.innerHTML=""; $docs.classList.remove("muted"); $docs.appendChild(list(group(md), [".md"])); }
+    else { $docs.textContent = "No Markdown files found."; }
+
+    // BOMs
+    if(csv.length){ $boms.innerHTML=""; $boms.classList.remove("muted"); $boms.appendChild(list(group(csv), [".csv"])); }
+    else { $boms.textContent = "No CSV files found."; }
+
+    // All files (any extension)
+    if(visible.length){ $all.innerHTML=""; $all.classList.remove("muted"); $all.appendChild(list(group(visible))); }
+    else { $all.textContent = "No files match your search."; }
   }
 
   fetch(api)
-    .then(r => {
-      if (!r.ok) throw new Error("GitHub API error: " + r.status);
-      return r.json();
+    .then(r=>{ if(!r.ok) throw new Error("GitHub API "+r.status); return r.json(); })
+    .then(js=>{
+      treePaths = (js.tree||[]).filter(n=>n.type==="blob").map(n=>n.path);
+      render();
     })
-    .then(data => {
-      const tree = (data.tree || []).filter(n => n.type === "blob").map(n => n.path);
-
-      const mdFiles  = tree.filter(p => p.toLowerCase().endsWith(".md"));
-      const csvFiles = tree.filter(p => p.toLowerCase().endsWith(".csv"));
-
-      if (mdFiles.length) {
-        const groups = groupByTopLevel(mdFiles);
-        docsList.innerHTML = "";
-        docsList.classList.remove("muted");
-        docsList.appendChild(makeGroupList(groups));
-      } else {
-        docsList.textContent = "No Markdown files found.";
-      }
-
-      if (csvFiles.length) {
-        const groups = groupByTopLevel(csvFiles);
-        bomList.innerHTML = "";
-        bomList.classList.remove("muted");
-        bomList.appendChild(makeGroupList(groups, true));
-      } else {
-        bomList.textContent = "No CSV files found.";
-      }
-    })
-    .catch(err => {
+    .catch(err=>{
       console.error(err);
-      docsList.textContent = "Couldn’t load file list (API limit or network).";
-      bomList.textContent  = "Couldn’t load file list (API limit or network).";
+      $docs.textContent = "Couldn’t load (API/network).";
+      $boms.textContent = "Couldn’t load (API/network).";
+      $all.textContent  = "Couldn’t load (API/network).";
     });
+
+  $search.addEventListener("input", e=>render(e.target.value));
   </script>
 </body>
 </html>
